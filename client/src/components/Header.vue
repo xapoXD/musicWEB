@@ -4,7 +4,7 @@
       <div class="row">
         <div class="col text-center text-white cs-big">
           <h1 class="pt-5">WELCOME TO MOUSIQUA </h1>
-          <span class="subheading ">by lil yannn</span>
+          <span class="subheading ">lol</span>
         </div>
       </div>
     </div>

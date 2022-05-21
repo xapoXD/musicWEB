@@ -1,7 +1,7 @@
 <template>
 <body>
   <div class="a-wrapper" >
-    <h1 class="center p-3 text-muted " >New Single “Por Favor” feat. Fifth Harmony Out Now!</h1>
+    <h1 class="center p-3 text-muted white" >New Single “Por Favor” feat. Fifth Harmony Out Now!</h1>
 
     <div class="rounded mx-auto d-block" style="width: 1000px">
       <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
@@ -67,11 +67,13 @@
   font-family: "Times New Roman";
   font-size: 20px;
   text-align: justify;
+  -webkit-text-fill-color: white;
 }
 
-body {
-  background-color: #333333;
+.white{
+
   -webkit-text-fill-color: white;
+
 }
 
 </style>

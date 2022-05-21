@@ -79,8 +79,8 @@ import Foot from "@/components/Footer.vue"
 }
 
 body {
-  background-color: #333333;
-
+  background-color: #333333 !important;
+  -webkit-text-fill-color: white ;
 }
 
 </style>
