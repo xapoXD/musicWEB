@@ -24,11 +24,10 @@ router.post("/", (req, res) => {
         songlocation: body.songlocation,
         text: body.text
     }
-    console.log("HELE VOLE: " + song.songlocation); // po sem probehne...
+    console.log("Posem funguje: " + song.songlocation); // po sem probehne...
     var stm = db.prepare("INSERT INTO songs (name, songlocation, text) VALUES (?,?,?)");
-    
     stm.run(...Object.values(song));
-    console.log("HELE pico funguj: " + stm);
+    console.log("funguj: " + stm);
     //stm.run(name, songlocation, text);
     res.send(song);
     console.log("Ulozeno: " + song);
