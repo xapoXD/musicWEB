@@ -3,13 +3,29 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
+const cors = require('cors');
+const bodyParser = require('body-parser')
 
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 const songsRouter = require('./routes/songs');
+const uploadRouter = require('./routes/upload');
+
+
 
 const app = express();
 
+
+app.use(
+    bodyParser.urlencoded({
+      extended: true,
+    })
+)
+
+
+app.use(cors());
+
+app.use(bodyParser.json())
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
@@ -17,6 +33,9 @@ app.set('view engine', 'hbs');
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/songs', songsRouter);
+app.use('/upload', uploadRouter);
+
+
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -25,10 +44,12 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use((req, res, next) => {
   res.append('Access-Control-Allow-Origin', ['*']);
+
   res.append('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
   res.append('Access-Control-Allow-Headers', 'Content-Type');
   next();
 });
+
 
 
 // catch 404 and forward to error handler
@@ -46,5 +67,6 @@ app.use(function (err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+
 
 module.exports = app;

@@ -11,7 +11,7 @@
         <div class="row mb-3">
           <div class="col">
             <label class="form-label ">Title</label>
-            <input v-model="song.title" type="text" class="form-control " placeholder="Title of song"/>
+            <input v-model="song.name" type="text" class="form-control " placeholder="Title of song"/>
           </div>
         </div>
         <div class="row mb-3">
@@ -34,7 +34,6 @@
   </div>
 
 
-
 </template>
 
 <script>
@@ -46,7 +45,12 @@ export default {
   name: "NewSong",
   data() {
     return {
-      song: new Song()
+      //song: new Song()
+      song: {
+        name: null,
+        text: null,
+        songlocation: null
+      }
     }
   },
   methods: {
@@ -54,37 +58,48 @@ export default {
 
     },
     async send() {
-
+      // posilani songy
       var input = document.querySelector('#file')
-
       var data = new FormData()
       data.append('file', input.files[0])
+      var SongCesta;
 
-
-      fetch('http://localhost:3001/songs', {
-        method: 'POST',
-        body: data
-      })
+      try {
+        await fetch('http://localhost:3001/songs', {
+          method: 'POST',
+          // mode: 'no-cors',  // allow origins funguje
+          body: data
+        }).then(function (data) {
+          return data.text().then(function (text) {
+            SongCesta = text;
+          });
+        }).catch(function (error) {
+          console.log('Request failed', error);
+        });
+        // output
+        console.log(SongCesta);
+        this.song.songlocation = SongCesta;
+      } catch (e) {
+        alert(e);
+      }
 
 
       // tady zacina post na stringy
-      /*
       try {
         console.log(this.song);
-        await fetch('http://localhost:3000/',
-            {
+        await fetch('http://localhost:3001/upload', {
               method: 'POST',
               body: JSON.stringify(this.song),
-              headers:{
-                'Content-type':'application/json'
+              headers: {
+                'Content-type': 'application/json'
               }
             }
         )
         alert("Saved!");
+
       } catch (e) {
         alert(e);
       }
-      */
 
 
     }
@@ -96,7 +111,7 @@ export default {
 
 <style>
 
-.black{
+.black {
 
   -webkit-text-fill-color: black;
 }
