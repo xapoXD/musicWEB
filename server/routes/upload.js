@@ -2,12 +2,14 @@ var express = require('express');
 var router = express.Router();
 var debug = require('debug')('router:upload');
 
-import db from "../model/Connection";
 
-import SongController from "../controller/SongController";
-const controller = new SongController();
+//import db from "../model/Connection";
 
-//var db = require('better-sqlite3')('songs.sqlite');
+
+//import SongController from "../controller/SongController";
+//const controller = new SongController();
+
+var db = require('better-sqlite3')('songs.sqlite');
 
 
 router.post("/", (req, res) => {
@@ -23,8 +25,10 @@ router.post("/", (req, res) => {
         text: body.text
     }
     console.log("HELE VOLE: " + song.songlocation); // po sem probehne...
-    const stm = db.prepare("INSERT INTO songs (name, songlocation, text) VALUES (?,?,?)");
-    stm.run(...Object.values(song))
+    var stm = db.prepare("INSERT INTO songs (name, songlocation, text) VALUES (?,?,?)");
+    
+    stm.run(...Object.values(song));
+    console.log("HELE pico funguj: " + stm);
     //stm.run(name, songlocation, text);
     res.send(song);
     console.log("Ulozeno: " + song);

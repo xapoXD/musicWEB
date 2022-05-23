@@ -36,10 +36,10 @@
 
 </template>
 
-<script>
+<script >
 
 import Song from "../stores/song.js";
-
+import buffer from 'buffer';
 
 export default {
   name: "NewSong",
@@ -65,7 +65,7 @@ export default {
       var SongCesta;
 
       try {
-        await fetch('http://localhost:3001/songs', {
+        await fetch('http://localhost:3001/songs/', {
           method: 'POST',
           // mode: 'no-cors',  // allow origins funguje
           body: data
@@ -87,7 +87,7 @@ export default {
       // tady zacina post na stringy
       try {
         console.log(this.song);
-        await fetch('http://localhost:3001/upload', {
+        await fetch('http://localhost:3001/upload/', {
               method: 'POST',
               body: JSON.stringify(this.song),
               headers: {
@@ -103,6 +103,18 @@ export default {
 
 
     }
+ /*    async send() {
+
+      //window.Buffer = window.Buffer || require('buffer').Buffer;
+     // var Buffer = require('buffer');
+      'use strict';
+      var input = document.querySelector('#file')
+      let data = input;
+      let buff = new buffer(data);
+      let base64data = buff.toString('base64');
+      console.log(base64data);
+    }
+    */
   }
 
 }
