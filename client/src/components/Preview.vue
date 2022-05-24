@@ -8,10 +8,12 @@
       <div class="container">
         <div class="row">
           <div class="col-sm">
+
             <router-link :to="`/song/${id}`" class="btn btn-secondary">
               Edit
               <em class="bi-play"/>
             </router-link>
+
           </div>
           <div class="col-sm">
             <audio preload="auto" controls>
@@ -40,7 +42,7 @@ export default {
 
   async send(id){
       console.log("Deleting " + id);
-      fetch(`http://localhost:3001/songs/${id}`,{method: 'DELETE'});
+      await fetch(`http://localhost:3001/songs/${id}`,{method: 'DELETE'});
       window.location.reload();
     }
 

@@ -6,14 +6,14 @@
       <div class="card-text">
         <div class="row mb-3">
           <div class="col">
-            <label class="form-label ">Title {{song.id}}</label>
-            <input v-model="Newsong.name" type="text" class="form-control " placeholder="{{song.name}}"/>
+            <label class="form-label ">Old name: {{song.name}}  </label>
+            <input v-model="newSong.name" type="text" class="form-control " placeholder="New name" />
           </div>
         </div>
         <div class="row mb-3">
           <div class="col">
-            <label class="form-label cs-style">Text</label>
-            <textarea v-model="Newsong.text" class="form-control " rows="5" placeholder="{{song.text}}"></textarea>
+            <label class="form-label cs-style">Old text: {{song.text}}</label>
+            <textarea v-model="newSong.text" class="form-control " rows="5" placeholder="New text"></textarea>
           </div>
         </div>
       </div>
@@ -37,35 +37,53 @@ export default {
   name: "Song",
   data() {
     return {
-      //song: new Song()
-      song:{
+      song: {
         id: null,
-        title: null,
-        songlocation: null,
-        text: null,
-      },
-      Newsong: {
         name: null,
         text: null,
+        songlocation: null,
+      },
+      newSong: {
+        id: null,
+        name: null,
+        text: null,
+        songlocation: null,
       }
     }
   },
+  async created() {
+    console.log(this.$route.params.id);
+    const id = this.$route.params.id;
+    this.song = await this.getData(id);
+  },
   methods: {
+
+    async getData(id) {
+      const res = await fetch(`http://localhost:3001/songs/${id}`,{method: 'GET'});
+      return res.json();
+    },
+
     async send(){
+          this.newSong.id = this.song.id;
+          this.newSong.songlocation = this.song.songlocation;
+
+      try {
+        console.log(this.newSong);
+        await fetch(`http://localhost:3001/songs/${this.newSong.id}`, {
+              method: 'PATCH',
+              body: JSON.stringify(this.newSong),
+              headers: {
+                'Content-type': 'application/json'
+              }
+            }
+        )
+        alert("Saved!");
+
+      } catch (e) {
+        alert(e);
+      }
 
     },
-    async mounted() {
-      const id = this.$route.params.id;
-      this.song = await this.getData(id);
-      console.log(this.song);
-    },
-      async getData(id) {
-        const res = await fetch(`http://localhost:3001/songs/${id}`,{method: 'GET'});
-        console.log(res);
-        return res.json();
-
-
-    }
   }
 
 }

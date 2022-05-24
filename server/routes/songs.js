@@ -6,24 +6,7 @@ var db = require('better-sqlite3')('songs.sqlite');
 var Song = require('../model/entity/Song');
 //import Song from "../model/entity/Song";
 
-//get 1 songu
-/*
-router.get('/:id', (req, res, next) => {
-    console.log("dostalo se to sem picosMUCSUos");
-    const id = req.params.id
-    
-    try{
-        const row = db.prepare('SELECT * FROM article WHERE id = ?').get(id);
-        console.log(row);
-        const Song = new Song(row.name, row.id, row.songlocation, row.text);
-        console.log(song);
-        res.send(song);
-        
-    }catch (e){
 
-    }
-});
-*/
 // get songu
 router.get("/", function (req, res, next) {
 
@@ -85,5 +68,48 @@ router.delete("/:id", (req, res) => {
         res.sendStatus(404);
     }
 })
+
+//get 1 songu
+router.get('/:id', (req, res, next) => {
+    console.log("dostalo se to sem picosMUCSUos");
+    const id = req.params.id;
+    console.log(id); // vypise se nazev brasko opravto
+    
+    try{
+        const row = db.prepare('SELECT * FROM songs WHERE id = ?').get(id);
+        console.log("tady je row: " + row);
+        const song = new Song(row.id, row.name, row.popis, row.songlocation);
+        console.log("song: " + song);
+        res.send(song);
+
+    }catch (e){
+
+    }
+});
+
+//edit songu
+
+router.patch("/:id", (req, res) => {
+    const body = req.body;
+    //console.log(body);
+    const id = req.params.id;
+    //console.log(id);
+    if (id) {
+        const song = db.prepare('SELECT * FROM songs WHERE id = ?').get(id);
+        if (song) {
+            Object.assign(song, body);
+            const stm = db.prepare(
+                "UPDATE songs SET name = ?, popis = ? WHERE id = ?"
+            );
+            stm.run(song.name, song.text ,parseInt(id));
+        } else {
+            res.sendStatus(404)
+        }
+        res.send(song);
+        //console.log(song);
+    } else {
+        res.sendStatus(404);
+    }
+});
 
 module.exports = router;
