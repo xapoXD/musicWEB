@@ -1,17 +1,51 @@
 var express = require('express');
 var router = express.Router();
 var debug = require('debug')('router:songs');
+var db = require('better-sqlite3')('songs.sqlite');
 
-//import SongController from "../controller/SongController";
-//const controller = new SongController();
+var Song = require('../model/entity/Song');
+//import Song from "../model/entity/Song";
 
+//get 1 songu
+/*
+router.get('/:id', (req, res, next) => {
+    console.log("dostalo se to sem picosMUCSUos");
+    const id = req.params.id
+    
+    try{
+        const row = db.prepare('SELECT * FROM article WHERE id = ?').get(id);
+        console.log(row);
+        const Song = new Song(row.name, row.id, row.songlocation, row.text);
+        console.log(song);
+        res.send(song);
+        
+    }catch (e){
+
+    }
+});
+*/
+// get songu
 router.get("/", function (req, res, next) {
-    const articles = controller.getAll();
-    res.send(articles);
+
+
+    console.log("Zacina vypis songu");
+    const rows = db.prepare('SELECT * FROM songs').all();
+    //console.log(rows);
+    const collection = [];
+    for (let row of rows) {
+        const song = new Song(row.id, row.name, row.popis, row.songlocation);
+       // console.log(song);
+        collection.push(song);
+    }
+    const songs = collection;
+    
+   // console.log(songs);
+    
+    res.send(songs);
 });
 
-// post na songu
 
+// post na songu
 router.post('/', function(req , res) {
     var multiparty = require('multiparty');
     var form = new multiparty.Form();
@@ -41,6 +75,15 @@ router.post('/', function(req , res) {
     });
 });
 
-
+//delete songu
+router.delete("/:id", (req, res) => {
+    const id = req.params.id;
+    if (id) {
+        db.prepare('DELETE FROM songs WHERE id = ?').run(id)
+        res.sendStatus(200);
+    } else {
+        res.sendStatus(404);
+    }
+})
 
 module.exports = router;

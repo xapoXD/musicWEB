@@ -100,21 +100,9 @@ export default {
       } catch (e) {
         alert(e);
       }
-
-
+       // TODO: mazani contentu po odeslani...
+      //this.song.delete();
     }
- /*    async send() {
-
-      //window.Buffer = window.Buffer || require('buffer').Buffer;
-     // var Buffer = require('buffer');
-      'use strict';
-      var input = document.querySelector('#file')
-      let data = input;
-      let buff = new buffer(data);
-      let base64data = buff.toString('base64');
-      console.log(base64data);
-    }
-    */
   }
 
 }

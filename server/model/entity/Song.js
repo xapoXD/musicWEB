@@ -1,13 +1,12 @@
-export default class Article {
-    id = null;
+module.exports = class Song {
     name = '';
-    text = '';
+    id = null;
     songlocation = '';
-    
+    text = '';
     constructor(id, name, text, songlocation) {
-        this.id = id;
         this.name = name;
-        this.text = text;
+        this.id = id;
         this.songlocation = songlocation;
+        this.text = text;
     }
 }

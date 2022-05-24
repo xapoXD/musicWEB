@@ -39,7 +39,7 @@ import Foot from "@/components/Footer.vue"
         <div class="col col-lg-2">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item">
-              <RouterLink  class="nav-link white" to="/">Home</RouterLink>
+              <RouterLink  class="nav-link white" to="/">ADD NEW SONG</RouterLink>
             </li>
           </ul>
         </div>
