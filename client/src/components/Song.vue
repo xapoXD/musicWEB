@@ -51,7 +51,7 @@ export default {
       }
     }
   },
-  async created() {
+  async mounted() {
     console.log(this.$route.params.id);
     const id = this.$route.params.id;
     this.song = await this.getData(id);
@@ -59,7 +59,7 @@ export default {
   methods: {
 
     async getData(id) {
-      const res = await fetch(`http://localhost:3001/songs/${id}`,{method: 'GET'});
+      const res = await fetch(`http://localhost:3001/upload/${id}`,{method: 'GET'});
       return res.json();
     },
 

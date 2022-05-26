@@ -5,7 +5,7 @@ var db = require('better-sqlite3')('songs.sqlite');
 
 var Song = require('../model/entity/Song');
 //import Song from "../model/entity/Song";
-
+var fs = require('fs');
 
 // get songu
 router.get("/", function (req, res, next) {
@@ -58,37 +58,8 @@ router.post('/', function(req , res) {
     });
 });
 
-//delete songu
-router.delete("/:id", (req, res) => {
-    const id = req.params.id;
-    if (id) {
-        db.prepare('DELETE FROM songs WHERE id = ?').run(id)
-        res.sendStatus(200);
-    } else {
-        res.sendStatus(404);
-    }
-})
-
-//get 1 songu
-router.get('/:id', (req, res, next) => {
-    console.log("dostalo se to sem picosMUCSUos");
-    const id = req.params.id;
-    console.log(id); // vypise se nazev brasko opravto
-    
-    try{
-        const row = db.prepare('SELECT * FROM songs WHERE id = ?').get(id);
-        console.log("tady je row: " + row);
-        const song = new Song(row.id, row.name, row.popis, row.songlocation);
-        console.log("song: " + song);
-        res.send(song);
-
-    }catch (e){
-
-    }
-});
 
 //edit songu
-
 router.patch("/:id", (req, res) => {
     const body = req.body;
     //console.log(body);
@@ -98,9 +69,7 @@ router.patch("/:id", (req, res) => {
         const song = db.prepare('SELECT * FROM songs WHERE id = ?').get(id);
         if (song) {
             Object.assign(song, body);
-            const stm = db.prepare(
-                "UPDATE songs SET name = ?, popis = ? WHERE id = ?"
-            );
+            const stm = db.prepare( "UPDATE songs SET name = ?, popis = ? WHERE id = ?" );
             stm.run(song.name, song.text ,parseInt(id));
         } else {
             res.sendStatus(404)
@@ -111,5 +80,39 @@ router.patch("/:id", (req, res) => {
         res.sendStatus(404);
     }
 });
+
+//delete songu
+router.delete("/:id", (req, res) => {
+    const id = req.params.id;
+    if (id) {
+        //find path to file
+        var location = db.prepare('SELECT songlocation FROM songs WHERE id = ?').get(id);
+       // console.log(location); // objekt -> array
+       // var poop = JSON.stringify(location);
+        //console.log(poop);
+        const LOL = Object.values(location);
+       // console.log(LOL); // array -->string
+        const poop = LOL.toString();
+        var rofl = poop.slice(28);
+       // console.log("HOTOVO: " + rofl);
+
+        //delete file
+        var path = "public/songs/" + rofl;
+        console.log(path);
+        fs.unlink(path, function (err) {
+            if (err) throw err;
+            // if no error, file has been deleted successfully
+            console.log('File deleted!');
+        });
+
+        db.prepare('DELETE FROM songs WHERE id = ?').run(id);
+        res.sendStatus(200);
+    } else {
+        res.sendStatus(404);
+    }
+
+});
+
+
 
 module.exports = router;

@@ -101,7 +101,7 @@ export default {
         alert(e);
       }
        // TODO: mazani contentu po odeslani...
-      //this.song.delete();
+       window.location.reload();
     }
   }
 

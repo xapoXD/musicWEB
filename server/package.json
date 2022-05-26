@@ -2,7 +2,6 @@
   "name": "server",
   "version": "0.0.0",
   "private": true,
-
   "scripts": {
     "start": " node ./bin/www"
   },
@@ -14,6 +13,7 @@
     "debug": "~2.6.9",
     "esm": "^3.2.25",
     "express": "~4.16.1",
+    "findit": "^2.0.0",
     "hbs": "~4.0.4",
     "http-errors": "~1.6.3",
     "morgan": "~1.9.1",
